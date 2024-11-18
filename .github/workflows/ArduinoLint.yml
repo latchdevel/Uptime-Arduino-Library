@@ -1,4 +1,4 @@
-name: Check Arduino
+name: Arduino Lint
 
 # See: https://docs.github.com/en/free-pro-team@latest/actions/reference/events-that-trigger-workflows
 on:
@@ -11,6 +11,7 @@ on:
 
 jobs:
   lint:
+    name: Arduino Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -21,5 +22,5 @@ jobs:
         uses: arduino/arduino-lint-action@v2
         with:
           compliance: strict
-          library-manager: update
+          library-manager: false
           project-type: library
