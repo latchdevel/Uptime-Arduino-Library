@@ -1,4 +1,8 @@
-# Uptime Arduino Library
+# Uptime Lighted
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
+[![Compile Tests](https://github.com/latchdevel/Uptime-Arduino-Library/actions/workflows/CompileTests.yml/badge.svg)](https://github.com/latchdevel/Uptime-Arduino-Library/actions/workflows/CompileTests.yml)
+[![Native Tests](https://github.com/latchdevel/Uptime-Arduino-Library/actions/workflows/NativeTests.yml/badge.svg)](https://github.com/latchdevel/Uptime-Arduino-Library/actions/workflows/NativeTests.yml)
+[![Arduino Lint](https://github.com/latchdevel/Uptime-Arduino-Library/actions/workflows/ArduinoLint.yml/badge.svg)](https://github.com/latchdevel/Uptime-Arduino-Library/actions/workflows/ArduinoLint.yml)
 
 Streamlined "uptime" library for Arduino to get the device runtime.
 
@@ -45,7 +49,7 @@ Try running this simple example on Arduino UNO here: [**WOKWI Uptime-Arduino-Lib
 
 Or try running the full example on Arduino UNO here: [**WOKWI Uptime-Arduino-Library-Complete-Example**](https://wokwi.com/projects/414108308610447361)
 
-Or try running the full example on native platform here: [**ONLINE CPP non-Arduino Compete Example**](https://www.online-cpp.com/NIlDZ8UMSb)
+Or try running the full example on native platform here: [**ONLINE CPP non-Arduino Complete Example**](https://www.online-cpp.com/NIlDZ8UMSb)
 
 ## Similar libraries
  - **Arduino UpTime** https://github.com/jozef/Arduino-UpTime
