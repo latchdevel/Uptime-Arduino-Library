@@ -1,0 +1,101 @@
+#description: 'Compile and run the example sketch for testing on the native platform.'
+#author: 'Jorge Rivera'
+#url: 'https://github.com/latchdevel'
+
+# This is the name of the workflow, visible on GitHub UI.
+name: Native Tests
+
+# Controls when the action will run. 
+# Here we tell GitHub to run the workflow when a commit.
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+    paths:
+      - "*.h"
+      - "examples/**"
+      - ".github/workflows/NativeTests.yml"
+
+
+  pull_request:
+    paths:
+      - "*.h"
+      - "examples/**"
+      - ".github/workflows/NativeTests.yml"
+  
+  schedule:
+    - cron:  '0 0 1 * *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  repository_dispatch:
+
+jobs:
+  native:
+    name: Native Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile
+        id: compile
+        run: |
+          # Compile example sketches:
+          export errors=()
+          for sketch in $( find ./examples -name "*.cpp"|sed "s/\ /__ESPACE__/g" )
+          do
+            sketch_file=$( echo $sketch |sed "s/__ESPACE__/\ /g" )
+            sketch_path=$( echo $sketch_file | sed "s/\(.*\)\/.*/\1/" )
+            {
+              echo -e "\033[34;1;4mCompile example sketch: $sketch_path\033[0m"
+
+              g++ -v -std=c++11 -Wall -Wextra -Wpedantic -I. -I"$sketch_path" "$sketch_file" -o "$sketch_file".out \
+              || { errors+=($sketch) ; echo -e "\033[31;1;4mERROR COMPILING SKETCH: $sketch_path\033[0m\r\n" ;} \
+            ;}
+          done
+          echo "errors=${errors[@]}" >> $GITHUB_OUTPUT
+
+      - name: Run
+        id: running
+        run: |
+          # Running example sketches:
+          export errors=()
+          for sketch in $( find ./examples -name "*.cpp.out"|sed "s/\ /__ESPACE__/g" )
+          do
+            sketch_file=$( echo $sketch |sed "s/__ESPACE__/\ /g" )
+            {
+              echo -e "\033[34;1;4mRunning example sketch: $sketch_file\033[0m"
+              
+              "$sketch_file" || { errors+=($sketch) ; echo -e "\033[31;1;4mERROR RUNNING SKETCH: $sketch_path\033[0m\r\n" ;} \
+            ;}
+          done
+          echo "errors=${errors[@]}" >> $GITHUB_OUTPUT
+
+      # Show compilation errors
+      - name: Show compilation errors
+        if: ${{ steps.compile.outputs.errors }}
+        env: 
+          errors: ${{ steps.compile.outputs.errors }}
+        run: |
+          #  Show errors
+          for sketch in $errors 
+          do
+            sketch_path=$( echo $sketch |sed "s/__ESPACE__/\ /g" )
+            echo -e "\033[31;1;4mERROR COMPILING SKETCH: $sketch_path\033[0m"
+          done
+          exit 1
+
+      # Show running errors
+      - name: Show running errors
+        if: ${{ steps.running.outputs.errors }}
+        env: 
+          errors: ${{ steps.running.outputs.errors }}
+        run: |
+          #  Show errors
+          for sketch in $errors 
+          do
+            sketch_path=$( echo $sketch |sed "s/__ESPACE__/\ /g" )
+            echo -e "\033[31;1;4mERROR RUNNING SKETCH: $sketch_path\033[0m"
+          done
+          exit 1
