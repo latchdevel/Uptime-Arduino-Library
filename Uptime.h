@@ -110,7 +110,7 @@ class Uptime {
          if (setMillisCustom) {
             setMillisCustom(new_millis);
          } else {
-            #if defined(__AVR__)
+            #if defined(__AVR__) && !defined(ARDUINO_ARCH_MEGAAVR)
                extern volatile unsigned long timer0_millis;
                // Ensure this cannot be disrupted
                uint8_t oldSREG = SREG;

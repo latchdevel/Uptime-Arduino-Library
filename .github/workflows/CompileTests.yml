@@ -74,6 +74,10 @@ jobs:
             fqbn: "arduino:samd:mzero_bl"
             platform: "arduino:samd"
 
+          - board: "Arduino Nano Every"
+            fqbn: "arduino:megaavr:nona4809"
+            platform: "arduino:megaavr"
+
           - board: "Raspberry Pi Pico"
             fqbn: "rp2040:rp2040:generic"
             platform: "rp2040:rp2040"
